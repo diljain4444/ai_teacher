@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary:   #060816;
+  --bg-secondary: #0B1020;
+  --neon-purple:  #8B5CF6;
+  --neon-blue:    #5B5CFF;
+  --neon-pink:    #C026D3;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: #E2E8F0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar          { width: 4px; height: 4px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: rgba(139,92,246,0.35); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.6); }
+
+@layer components {
+  .glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-hover:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(139,92,246,0.3);
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #5B5CFF, #8B5CF6, #C026D3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-btn {
+    background: linear-gradient(135deg, #5B5CFF, #8B5CF6, #C026D3);
+    background-size: 200% 200%;
+    transition: all 0.3s ease;
+  }
+  .gradient-btn:hover {
+    background-position: right center;
+    box-shadow: 0 0 30px rgba(139,92,246,0.5);
+    transform: translateY(-1px);
+  }
+  .glow-ring {
+    box-shadow: 0 0 0 1px rgba(139,92,246,0.3), 0 0 20px rgba(139,92,246,0.15);
+  }
+  .card {
+    background: rgba(11,16,32,0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+  }
+  .neon-border {
+    border: 1px solid rgba(139,92,246,0.4);
+    box-shadow: 0 0 15px rgba(139,92,246,0.15), inset 0 0 15px rgba(139,92,246,0.05);
+  }
+}
+
+/* Progress bar animation */
+@keyframes progressPulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+/* Audio wave animation */
+@keyframes wave {
+  0%,100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
+}
+.wave-bar { animation: wave 1.2s ease-in-out infinite; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.15s; }
+
+/* Gradient animated background for hero */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animated-gradient {
+  background: linear-gradient(270deg, #5B5CFF, #8B5CF6, #C026D3, #5B5CFF);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dot pipeline connector */
+.pipeline-line {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(139,92,246,0.4) 0px,
+    rgba(139,92,246,0.4) 6px,
+    transparent 6px,
+    transparent 14px
+  );
+}

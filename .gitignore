@@ -1,0 +1,54 @@
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+.mypy_cache/
+.pytest_cache/
+
+# ── Environment / Secrets ─────────────────────────────────────────
+.env
+backend/.env
+*.env.local
+
+# ── Virtual environments ──────────────────────────────────────────
+venv/
+env/
+.venv/
+genai_env/
+
+# ── Node / React frontend ─────────────────────────────────────────
+react-frontend/node_modules/
+react-frontend/dist/
+react-frontend/.env.local
+
+# ── Capacitor / Android ───────────────────────────────────────────
+# Uncomment the next line to exclude the Android project from git.
+# The android/ folder is large but needed if you build APKs in CI.
+# react-frontend/android/
+
+# ── Generated files ───────────────────────────────────────────────
+generated_docx/
+*.docx
+
+# ── Video assets (large binary files) ────────────────────────────
+# Committed copies are in assets/videos/. Originals at root kept for
+# backwards-compat but should be removed once fully migrated.
+final_teacher.mp4
+final_female_teacher.mp4
+
+# ── Editor / OS ───────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Temp / uploads ────────────────────────────────────────────────
+*.tmp
+uploads/
+temp/

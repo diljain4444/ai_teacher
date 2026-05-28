@@ -1,0 +1,43 @@
+# ── Web framework ────────────────────────────────────────────────
+fastapi==0.135.1
+uvicorn==0.42.0
+python-multipart==0.0.22
+
+# ── AI / LLM / LangChain ─────────────────────────────────────────
+langchain==1.2.15
+langchain-community==0.4.1
+langchain-core==1.2.26
+langchain-groq==1.1.2
+langchain-huggingface==1.2.1
+langchain-text-splitters==1.1.1
+groq==0.37.1
+
+# ── LangGraph ────────────────────────────────────────────────────
+langgraph==1.1.6
+langgraph-checkpoint==4.0.1
+langgraph-prebuilt==1.0.9
+langgraph-sdk==0.3.12
+
+# ── Embeddings / Vector store ────────────────────────────────────
+sentence-transformers==5.3.0
+faiss-cpu==1.13.2
+rank-bm25==0.2.2
+
+# ── Document loaders ─────────────────────────────────────────────
+PyMuPDF==1.27.2.2
+docx2txt==0.9
+python-docx==1.2.0
+unstructured==0.21.5
+unstructured-client==0.42.10
+
+# ── Text-to-Speech ───────────────────────────────────────────────
+gTTS==2.5.4
+edge-tts==7.2.8
+
+# ── Translation ──────────────────────────────────────────────────
+deep-translator==1.11.4
+
+# ── Utilities ────────────────────────────────────────────────────
+python-dotenv==1.2.2
+pydantic==2.12.5
+pydantic-settings==2.13.1
