@@ -1,41 +1,26 @@
 import os
-from langchain_groq import ChatGroq
-from langgraph.checkpoint.memory import InMemorySaver
-from typing import TypedDict, List
-from langgraph.graph import StateGraph, END
-from langchain_core.messages import HumanMessage, AIMessage, BaseMessage
-from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
-from dotenv import load_dotenv  
-from typing import Annotated
-from langgraph.graph import add_messages
-from langchain_community.document_loaders import (
-    PyPDFLoader,
-    PyMuPDFLoader,
-    Docx2txtLoader,
-    UnstructuredImageLoader,
-    UnstructuredPDFLoader
-)
-load_dotenv()
 import re
-from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import PydanticOutputParser
-from pydantic import BaseModel, Field
-from typing import List, Any, Dict
-from langchain_community.vectorstores import FAISS
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.retrievers import BM25Retriever
-from langgraph.graph import StateGraph, END, START
-from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from deep_translator import GoogleTranslator
-from typing import TypedDict
 import time
-from gtts import gTTS
 import tempfile
+
+from dotenv import load_dotenv
+from typing import TypedDict, List, Any, Dict
+
+from langchain_groq import ChatGroq
+from langgraph.graph import StateGraph, END, START
+from langchain_core.messages import HumanMessage
+from langchain_community.document_loaders import Docx2txtLoader
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import PydanticOutputParser, StrOutputParser
+from pydantic import BaseModel, Field
+from deep_translator import GoogleTranslator
+from gtts import gTTS
+
 from dictio import HINGLISH_TO_DEVANAGARI
+
+load_dotenv()
 
 
 def hinglish_to_devanagari(text):
