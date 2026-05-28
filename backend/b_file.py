@@ -114,11 +114,6 @@ def _invoke_with_retry(chain, inputs, max_retries=3, delay=1):
                 time.sleep(delay)
     raise last_exc
 
-embedding = HuggingFaceEmbeddings(
-    model_name="BAAI/bge-small-en-v1.5"
-)
-
-
 def _extract_image_content(image_path: str) -> str:
     """Use the vision-capable Groq model to extract all text and visual content from an image."""
     import base64

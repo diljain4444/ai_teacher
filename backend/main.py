@@ -14,6 +14,7 @@ import asyncio
 import tempfile
 import threading
 import traceback
+import time as _time
 from typing import Optional, List
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, BackgroundTasks
@@ -42,8 +43,35 @@ app.add_middleware(
 )
 
 # ── In-memory stores ──────────────────────────────────────────────
-jobs: dict = {}   # job_id  → {status, progress, message, result, error}
-files: dict = {}  # file_id → {path, filename, pages, size_mb}
+jobs: dict = {}   # job_id  → {status, progress, message, result, error, ts}
+files: dict = {}  # file_id → {path, filename, pages, size_mb, ts}
+
+
+# ── Background cleanup ────────────────────────────────────────────
+async def _cleanup_loop():
+    """Every 5 min: delete finished jobs older than 10 min and uploaded files older than 30 min."""
+    while True:
+        await asyncio.sleep(300)
+        now = _time.time()
+        dead_jobs = [jid for jid, j in list(jobs.items())
+                     if j.get("status") in ("done", "error") and now - j.get("ts", now) > 600]
+        for jid in dead_jobs:
+            jobs.pop(jid, None)
+
+        dead_files = [fid for fid, f in list(files.items())
+                      if now - f.get("ts", now) > 1800]
+        for fid in dead_files:
+            info = files.pop(fid, None)
+            if info:
+                try:
+                    os.unlink(info["path"])
+                except OSError:
+                    pass
+
+
+@app.on_event("startup")
+async def _start_cleanup():
+    asyncio.create_task(_cleanup_loop())
 
 
 # ── Helpers ──────────────────────────────────────────────────────
@@ -163,6 +191,7 @@ async def upload_file(file: UploadFile = File(...)):
         "filename": file.filename,
         "pages": pages,
         "size": f"{size_mb} MB",
+        "ts": _time.time(),
     }
 
     return {"file_id": file_id, "filename": file.filename, "pages": pages, "size": f"{size_mb} MB"}
@@ -331,7 +360,7 @@ async def start_processing(req: ProcessRequest):
         raise HTTPException(404, "File not found. Upload first.")
 
     job_id = str(uuid.uuid4())
-    jobs[job_id] = {"status": "queued", "progress": 0, "message": "Queued…", "result": None, "error": None}
+    jobs[job_id] = {"status": "queued", "progress": 0, "message": "Queued…", "result": None, "error": None, "ts": _time.time()}
 
     t = threading.Thread(target=_run_job,
                          args=(job_id, req.file_id, req.pages, req.language, req.task),
