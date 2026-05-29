@@ -226,9 +226,9 @@ export default function Home() {
               <input
                 type="number"
                 min="1"
-                max={endPage}
+                max={fileInfo?.pages ?? 9999}
                 value={startPage}
-                onChange={(e) => setStartPage(Math.max(1, Math.min(Number(e.target.value), endPage)))}
+                onChange={(e) => setStartPage(Math.max(1, Number(e.target.value)))}
                 placeholder="From"
                 className="flex-1 rounded-lg px-3 py-2 text-sm text-white"
                 style={{
@@ -240,10 +240,10 @@ export default function Home() {
               <ArrowRight size={14} style={{ color: '#4B5563', flexShrink: 0 }} />
               <input
                 type="number"
-                min={startPage}
+                min="1"
                 max={fileInfo?.pages ?? 9999}
                 value={endPage}
-                onChange={(e) => setEndPage(Math.max(startPage, Math.min(Number(e.target.value), fileInfo?.pages ?? 9999)))}
+                onChange={(e) => setEndPage(Math.min(Number(e.target.value), fileInfo?.pages ?? 9999))}
                 placeholder="To"
                 className="flex-1 rounded-lg px-3 py-2 text-sm text-white"
                 style={{
