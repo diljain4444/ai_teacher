@@ -36,8 +36,14 @@ export default function Home() {
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState('')
 
+  const maxPages = fileInfo?.pages ?? 9999
+
   const handleProcess = async () => {
     if (!fileInfo) { setError('Please upload a file first.'); return }
+    if (pageMode === 'range' && startPage > endPage) {
+      setError('Start page cannot be greater than end page.')
+      return
+    }
     setError('')
     setProcessing(true)
     try {
@@ -221,19 +227,30 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="flex items-center gap-3 mt-3"
+              className="flex flex-col gap-2 mt-3"
             >
+              {fileInfo?.pages && (
+                <p className="text-xs" style={{ color: '#6B7280' }}>
+                  PDF has <span style={{ color: '#818CF8' }}>{fileInfo.pages}</span> pages
+                </p>
+              )}
+              <div className="flex items-center gap-3">
               <input
                 type="number"
                 min="1"
-                max={fileInfo?.pages ?? 9999}
+                max={maxPages}
                 value={startPage}
-                onChange={(e) => setStartPage(Math.max(1, Number(e.target.value)))}
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(Number(e.target.value), maxPages))
+                  setStartPage(val)
+                  if (val > endPage) setError('Start page cannot be greater than end page.')
+                  else setError('')
+                }}
                 placeholder="From"
                 className="flex-1 rounded-lg px-3 py-2 text-sm text-white"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: `1px solid ${startPage > endPage ? 'rgba(248,113,113,0.6)' : 'rgba(255,255,255,0.1)'}`,
                   outline: 'none',
                 }}
               />
@@ -241,17 +258,23 @@ export default function Home() {
               <input
                 type="number"
                 min="1"
-                max={fileInfo?.pages ?? 9999}
+                max={maxPages}
                 value={endPage}
-                onChange={(e) => setEndPage(Math.min(Number(e.target.value), fileInfo?.pages ?? 9999))}
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(Number(e.target.value), maxPages))
+                  setEndPage(val)
+                  if (startPage > val) setError('Start page cannot be greater than end page.')
+                  else setError('')
+                }}
                 placeholder="To"
                 className="flex-1 rounded-lg px-3 py-2 text-sm text-white"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: `1px solid ${startPage > endPage ? 'rgba(248,113,113,0.6)' : 'rgba(255,255,255,0.1)'}`,
                   outline: 'none',
                 }}
               />
+              </div>
             </motion.div>
           )}
         </motion.div>

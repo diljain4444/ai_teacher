@@ -36,11 +36,7 @@ react-frontend/.env.local
 generated_docx/
 *.docx
 
-# ── Video assets (large binary files) ────────────────────────────
-# Committed copies are in assets/videos/. Originals at root kept for
-# backwards-compat but should be removed once fully migrated.
-final_teacher.mp4
-final_female_teacher.mp4
+
 
 # ── Editor / OS ───────────────────────────────────────────────────
 .vscode/
