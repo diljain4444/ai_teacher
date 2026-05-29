@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle, AlertCircle, Loader, Cpu, Mic, BrainCircuit, FileText, Zap } from 'lucide-react'
-import { getJobResult } from '../api/client.js'
+import { getJobResult, getJobStatus } from '../api/client.js'
 import useStore from '../store/useStore.js'
 
 const STEPS = [
@@ -27,20 +27,16 @@ export default function ProcessingScreen() {
     setSlides, setPage, language, task,
   } = useStore()
 
-  const sseRef = useRef(null)
+  const pollRef = useRef(null)
   const [localProgress, setLocalProgress] = useState(0)
 
   useEffect(() => {
     if (!jobId) return
 
-    // SSE connection to backend
-    const url = `/api/jobs/${jobId}/events`
-    const es = new EventSource(url)
-    sseRef.current = es
-
-    es.onmessage = (e) => {
+    // Polling — SSE is unreliable on HuggingFace Spaces
+    pollRef.current = setInterval(async () => {
       try {
-        const data = JSON.parse(e.data)
+        const data = await getJobStatus(jobId)
         if (data.progress !== undefined) {
           setJobProgress(data.progress)
           setLocalProgress(data.progress)
@@ -48,22 +44,21 @@ export default function ProcessingScreen() {
         if (data.message) setJobMessage(data.message)
         if (data.status)  setJobStatus(data.status)
         if (data.status === 'done') {
-          es.close()
+          clearInterval(pollRef.current)
           fetchResult()
         }
         if (data.status === 'error') {
           setJobError(data.error ?? 'Unknown error')
-          es.close()
+          clearInterval(pollRef.current)
         }
-      } catch {}
-    }
-    es.onerror = () => {
-      setJobStatus('error')
-      setJobError('Lost connection to server')
-      es.close()
-    }
+      } catch {
+        setJobStatus('error')
+        setJobError('Lost connection to server')
+        clearInterval(pollRef.current)
+      }
+    }, 2000)
 
-    return () => es.close()
+    return () => clearInterval(pollRef.current)
   }, [jobId])
 
   const fetchResult = async () => {

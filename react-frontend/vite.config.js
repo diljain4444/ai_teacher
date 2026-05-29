@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // Capacitor requires assets to be loaded relative to the file system, not from /
-  base: './',
+  base: process.env.VITE_BUILD_TARGET === 'web' ? '/' : './',
   build: {
     outDir: 'dist',
   },
