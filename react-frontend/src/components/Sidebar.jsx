@@ -14,10 +14,10 @@ const NAV_ITEMS = [
 ]
 
 const TECH_STACK = [
-  { icon: Zap,      label: 'Groq LLaMA 4' },
-  { icon: Bot,      label: 'Azure Neural TTS' },
-  { icon: Network,  label: 'LangGraph + RAG' },
-  { icon: Database, label: 'FAISS + BM25' },
+  { icon: Zap,      label: 'LLaMA 4 via Groq' },
+  { icon: Bot,      label: 'AI Voice Narration' },
+  { icon: Network,  label: 'LangGraph Agents' },
+  { icon: Database, label: 'FAISS Vector Search' },
 ]
 
 export default function Sidebar() {
