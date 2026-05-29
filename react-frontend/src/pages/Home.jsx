@@ -87,7 +87,7 @@ export default function Home() {
             color: '#8B5CF6',
           }}
         >
-          <Zap size={12} /> Powered by Groq LLaMA 4 + Azure Neural TTS
+          🧠 AI-Powered Learning — Explain · Quiz · Ask
         </div>
 
         <h1 className="text-4xl font-black text-white mb-3 leading-tight">
